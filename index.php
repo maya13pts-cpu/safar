@@ -1,48 +1,136 @@
-<?php
-require_once 'db.php';
-
-$result = mysqli_query($conn, "SELECT * FROM experiences");
-?>
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>منصة سَفَر السياحية</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 20px; }
-        h1 { color: #1e3a8a; text-align: center; }
-        .container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 280px; padding: 15px; text-align: center; }
-        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; }
-        .price { color: #059669; font-weight: bold; font-size: 1.1em; }
-        .btn { display: inline-block; padding: 8px 15px; background-color: #2563eb; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background-color: #f7f3ed;
+            color: #4a3525;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #3b2b20;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d4b595;
+        }
+        nav a {
+            color: #f7f3ed;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        nav a:hover {
+            color: #d4b595;
+        }
+        .btn-register {
+            background-color: #8c6239;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .btn-register:hover {
+            background-color: #6f4e37;
+        }
+        .hero {
+            padding: 45px 20px;
+        }
+        .hero h1 {
+            color: #4a3525;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            color: #7b6655;
+            font-size: 16px;
+            max-width: 650px;
+            margin: 0 auto 25px auto;
+            line-height: 1.6;
+        }
+        .content {
+            margin: 30px auto;
+            max-width: 800px;
+            padding: 0 20px;
+            text-align: right;
+        }
+        .box {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ebdccc;
+            box-shadow: 0 2px 8px rgba(111, 78, 55, 0.05);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .box img {
+            width: 130px;
+            height: 95px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .box-info h3 {
+            color: #4a3525;
+            margin-bottom: 6px;
+            font-size: 18px;
+        }
+        .box-info p {
+            color: #7b6655;
+            font-size: 14px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
-    <h1>مرحباً بكم في منصة سَفَر ✈️</h1>
-    <p style="text-align: center;">اكتشف أروع التجارب السياحية في المملكة</p>
+    <header>
+        <div class="logo">سَفَر</div>
+        <nav>
+            <a href="index.php">الرئيسية</a>
+            <a href="register.php" class="btn-register">تسجيل الدخول</a>
+        </nav>
+    </header>
 
-    <div class="container">
-        <?php while ($exp = mysqli_fetch_assoc($result)): ?>
-            <div class="card">
-                <img src="<?php echo $exp['image']; ?>" alt="<?php echo $exp['title']; ?>">
-                <h3><?php echo $exp['title']; ?></h3>
-                <p>المدينة: <?php echo $exp['city']; ?></p>
-                <p class="price">السعر: <?php echo $exp['price']; ?> ريال</p>
-                <p>المقاعد المتاحة: <?php echo $exp['seats']; ?></p>
-                <a href="book.php?id=<?php echo $exp['id']; ?>" class="btn">احجز الآن</a>
+    <div class="hero">
+        <h1>اكتشف روح المملكة مع أهلها</h1>
+        <p><strong>منصة سَفَر:</strong> وجهتك السياحية الأولى لاستكشاف أجمل التجارب التراثية، رحلات الهايكنج في الطبيعة، والتعرف على ثقافة المملكة الأصيلة برفقة مرشدين محليين.</p>
+        <a href="register.php" class="btn-register" style="padding: 12px 28px; font-size: 16px;">انضم إلينا الآن</a>
+    </div>
+
+    <div class="content">
+        <div class="box">
+            <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=300&q=80" alt="هايكنج جبال السودة">
+            <div class="box-info">
+                <h3>جولة هايكنج في جبال السودة</h3>
+                <p>استكشف المسارات الجبلية وأجواء الضباب الساحرة في أبها برفقة مرشد محلي.</p>
             </div>
-        <?php endwhile; ?>
+        </div>
+
+        <div class="box">
+            <!-- صورة فخار تراثية وطينية ترمز للعلا وأصالة الحرف اليدوية -->
+            <img src="pottery.jpeg"alt="فخار العلا">
+            <div class="box-info">
+                <h3>ورشة صناعة فخار في العلا</h3>
+                <p>عش أصالة التراث العريق وتعرف على حرف الأجداد الطينية وسط الطبيعة التاريخية الخلابة.</p>
+            </div>
+        </div>
     </div>
-<div class="header-section" style="text-align: center; padding: 40px;">
-    
-    <!-- حطّي الأزرار هنا -->
-    <div class="auth-buttons" style="margin-top: 20px;">
-        <a href="register.php" class="btn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">إنشاء حساب</a>
-        <a href="login.php" class="btn" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px;">تسجيل الدخول</a>
-    </div>
-</div>
+
 </body>
 </html>
