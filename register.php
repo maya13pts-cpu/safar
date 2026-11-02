@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         body {
             font-family: Tahoma, sans-serif;
             background-color: #f7f4ef;
-            color: #333;
+            color: #a78e8e;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,13 +40,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background: #ffffff;
             padding: 35px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            border-top: 5px solid #6b4f3b;
+            box-shadow: 0 4px 15px rgba(147, 76, 76, 0.08);
+            border-top: 5px solid #dcc5b6;
             width: 100%;
             max-width: 400px;
         }
+        
         h2 {
-            color: #6b4f3b;
+            color: #c8ad99;
             text-align: center;
             margin-bottom: 25px;
         }
@@ -54,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: block;
             margin-top: 12px;
             font-weight: bold;
-            color: #553d2d;
+            color: #baa18f;
             font-size: 14px;
         }
         input {
@@ -67,10 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             outline: none;
         }
         input:focus {
-            border-color: #6b4f3b;
+            border-color: #9f8979;
         }
         button {
-            background-color: #6b4f3b;
+            background-color: #a18875;
             color: white;
             border: none;
             padding: 12px;
@@ -82,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-weight: bold;
         }
         button:hover {
-            background-color: #553d2d;
+            background-color: #957f70;
         }
         .login-link {
             text-align: center;
@@ -90,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 14px;
         }
         .login-link a {
-            color: #6b4f3b;
+            color: #a58b78;
             text-decoration: none;
             font-weight: bold;
         }

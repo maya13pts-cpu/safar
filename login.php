@@ -35,13 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>تسجيل الدخول - منصة سَفَر</title>
     <style>
         body { font-family: Tahoma, sans-serif; background-color: #f7f4ef; color: #333; text-align: center; padding: 50px; }
-        .form-container { background: white; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #6b4f3b; }
-        h2 { color: #6b4f3b; }
+        .form-container { background: white; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #c1a18a; }
+        h2 { color: #ae8d76; }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; text-align: right; }
-        button { background-color: #6b4f3b; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 16px; cursor: pointer; }
-        button:hover { background-color: #553d2d; }
+        button { background-color: #a68d79; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #a37b61; }
         .error { color: #d9534f; margin-bottom: 15px; font-size: 14px; }
-        a { color: #6b4f3b; text-decoration: none; display: block; margin-top: 15px; }
+        a { color: #c2a793; text-decoration: none; display: block; margin-top: 15px; }
     </style>
 </head>
 <body>

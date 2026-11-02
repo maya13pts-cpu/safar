@@ -13,10 +13,10 @@ include 'db.php';
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-beige: #f7f4ef;          
-            --primary-accent: #a3704c;    
-            --dark-brown: #4a3525;        
-            --btn-beige: #d8c3a5;
+            --bg-beige: #dac9ab;          
+            --primary-accent: #ba9275;    
+            --dark-brown: #b59782;        
+            --btn-beige: #867764;
         }
 
         body {
@@ -35,7 +35,7 @@ include 'db.php';
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e6d7c3;
+            border-bottom: 1px solid #d6c4a9;
         }
 
         .logo-area {
@@ -45,8 +45,8 @@ include 'db.php';
         }
 
         .logo-img {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -98,7 +98,7 @@ include 'db.php';
         }
 
         .hero p {
-            color: #6b4f3b;
+            color: #998779;
             font-size: 17px;
             line-height: 1.8;
             max-width: 650px;
@@ -187,6 +187,13 @@ include 'db.php';
             line-height: 1.6;
             margin: 0;
         }
+        body {
+    font-family: Tahoma, sans-serif;
+    margin: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.8)), url('tt.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
     </style>
 </head>
 <body>
