@@ -1,25 +1,7 @@
 <?php
 session_start();
 include 'db.php';
-// معالجة إضافة الرحلة للسلة والتوجيه المباشر
-if (isset($_POST['add_to_cart'])) {
-    $id = $_POST['trip_id'];
-    $name = $_POST['trip_name'];
-    $price = (float)$_POST['trip_price'];
 
-    if (isset($_SESSION['cart'][$id])) {
-        $_SESSION['cart'][$id]['quantity'] += 1;
-    } else {
-        $_SESSION['cart'][$id] = [
-            'name' => $name,
-            'price' => $price,
-            'quantity' => 1
-        ];
-    }
-
-    header("Location: cart.php");
-    exit();
-}
 $tours = [
     [
         "id" => 1,
@@ -29,7 +11,8 @@ $tours = [
         "price" => 150,
         "duration" => "4 ساعات",
         "guide" => "فهد القحطاني",
-        "guide_role" => "مرشد مرتفعات وطبيعة"
+        "guide_role" => "مرشد مرتفعات وطبيعة",
+        "video" => "alsoudah.mp4"
     ],
     [
         "id" => 2,
@@ -39,7 +22,8 @@ $tours = [
         "price" => 100,
         "duration" => "3 ساعات",
         "guide" => "نورة العتيبي",
-        "guide_role" => "أخصائية حرف تراثية"
+        "guide_role" => "أخصائية حرف تراثية",
+        "video" => "pottery.mp4"
     ],
     [
         "id" => 3,
@@ -49,7 +33,8 @@ $tours = [
         "price" => 70,
         "duration" => "ساعتان ونصف",
         "guide" => "نورة العتيبي",
-        "guide_role" => "أخصائية حرف تراثية"
+        "guide_role" => "أخصائية حرف تراثية",
+        "video" => "wool.mp4"
     ],
     [
         "id" => 4,
@@ -59,7 +44,8 @@ $tours = [
         "price" => 250,
         "duration" => "6 ساعات",
         "guide" => "سالم المري",
-        "guide_role" => "دليل الصحراء والبدو"
+        "guide_role" => "دليل الصحراء والبدو",
+        "video" => "safari.mp4"
     ],
     [
         "id" => 5,
@@ -69,7 +55,8 @@ $tours = [
         "price" => 80,
         "duration" => "3 ساعات",
         "guide" => "فهد القحطاني",
-        "guide_role" => "مرشد بيئي واحات"
+        "guide_role" => "مرشد بيئي واحات",
+        "video" => "ahsa.mp4"
     ],
     [
         "id" => 6,
@@ -79,7 +66,8 @@ $tours = [
         "price" => 200,
         "duration" => "5 ساعات",
         "guide" => "سالم المري",
-        "guide_role" => "قائد رحلات بحرية"
+        "guide_role" => "قائد رحلات بحرية",
+        "video" => "umluj.mp4"
     ]
 ];
 ?>
@@ -90,24 +78,28 @@ $tours = [
     <meta charset="UTF-8">
     <title>الرحلات والخدمات - سَفَر</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-beige: #f7f4ef;          
             --primary-accent: #a3704c;    
-            --dark-brown: #bfb2a9;        
+            --dark-brown: #3C2A21;        
             --btn-beige: #a58f70;
+            --accent-gold: #C5A059;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
-            background-color: var(--bg-beige);
-            color: #333;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.8)), url('tt.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
             min-height: 100vh;
         }
 
         header {
-            background-color: #f2e9dc;
+            background-color: rgba(242, 233, 220, 0.95);
+            backdrop-filter: blur(8px);
             padding: 15px 40px;
             display: flex;
             justify-content: space-between;
@@ -147,7 +139,7 @@ $tours = [
 
         header nav a.btn-nav-auth {
             background-color: var(--btn-beige);
-            color: var(--dark-brown);
+            color: #fff;
         }
 
         header nav a:hover {
@@ -162,28 +154,30 @@ $tours = [
 
         h1 {
             text-align: center;
-            color: var(--dark-brown);
+            color: #fff;
             font-size: 30px;
             font-weight: 800;
             margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .subtitle {
             text-align: center;
-            color: #8c7361;
+            color: #e0d6c8;
             margin-bottom: 35px;
             font-size: 16px;
             font-weight: 600;
         }
 
         .tour-card {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 28px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 18px rgba(74, 53, 37, 0.05);
-            border: none;
-            border-right: 6px solid var(--primary-accent);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            border-right: 6px solid var(--accent-gold);
+            color: var(--dark-brown);
         }
 
         .tour-title {
@@ -203,7 +197,7 @@ $tours = [
 
         .desc {
             font-size: 14px;
-            color: #665548;
+            color: #555;
             line-height: 1.7;
             margin-bottom: 18px;
         }
@@ -226,21 +220,47 @@ $tours = [
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #f2e9dc;
+            border-top: 1px solid #eee;
             padding-top: 16px;
         }
 
-        .price {
-            font-size: 24px;
+        .price-tag {
+            font-size: 22px;
             font-weight: 800;
             color: var(--primary-accent);
         }
 
-        .btn-book {
-            background-color: var(--btn-beige);
+        .actions-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-experience {
+            background-color: #FAF8F5;
             color: var(--dark-brown);
+            border: 1px solid var(--accent-gold);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-experience:hover {
+            background-color: var(--accent-gold);
+            color: #fff;
+        }
+
+        .btn-book {
+            background-color: var(--accent-gold);
+            color: white;
             border: none;
-            padding: 10px 28px;
+            padding: 10px 24px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: 700;
@@ -250,17 +270,83 @@ $tours = [
         }
 
         .btn-book:hover {
-            background-color: var(--primary-accent);
-            color: white;
+            background-color: #A6823C;
         }
-         body {
-    font-family: Tahoma, sans-serif;
-    margin: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.8)), url('tt.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-}
 
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(60, 42, 33, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 650px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            position: relative;
+            color: var(--dark-brown);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--dark-brown);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--accent-gold);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            max-height: 380px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .btn-gold-modal {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+
+        .btn-gold-modal:hover {
+            background-color: #A6823C;
+        }
     </style>
 </head>
 <body>
@@ -298,16 +384,68 @@ $tours = [
                 </div>
                 
                 <div class="card-footer">
-                    <div class="price"><?php echo $tour['price']; ?> ر.س</div>
-                    <?php if(isset($_SESSION['username'])): ?>
-                        <a href="booking.php?id=<?php echo $tour['id']; ?>&title=<?php echo urlencode($tour['title']); ?>&price=<?php echo $tour['price']; ?>&guide=<?php echo urlencode($tour['guide']); ?>" class="btn-book">حجز التجربة</a>
-                    <?php else: ?>
-                        <a href="login.php" class="btn-book" onclick="alert('يرجى تسجيل الدخول أولاً لإتمام الحجز.');">حجز التجربة</a>
-                    <?php endif; ?>
+                    <div class="price-tag"><?php echo $tour['price']; ?> ر.س</div>
+                    
+                    <div class="actions-group">
+                        <?php if(!empty($tour['video'])): ?>
+                            <button class="btn-experience" onclick="openVideoModal('<?php echo $tour['video']; ?>', '<?php echo $tour['title']; ?>', <?php echo $tour['id']; ?>)">
+                                <i class="fa-solid fa-play"></i> عيش التجربة
+                            </button>
+                        <?php endif; ?>
+
+                        <?php if(isset($_SESSION['username'])): ?>
+                            <a href="booking.php?id=<?php echo $tour['id']; ?>&title=<?php echo urlencode($tour['title']); ?>&price=<?php echo $tour['price']; ?>&guide=<?php echo urlencode($tour['guide']); ?>" class="btn-book">حجز التجربة</a>
+                        <?php else: ?>
+                            <a href="login.php" class="btn-book" onclick="alert('يرجى تسجيل الدخول أولاً لإتمام الحجز.');">حجز التجربة</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+
+    <!-- نافذة المودل لعرض الفيديوهات -->
+    <div id="videoModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeVideoModal()">&times;</span>
+            <h3 id="modalTitle">عنوان التجربة</h3>
+            
+            <div class="video-container">
+                <video id="localExperienceVideo" controls autoplay>
+                    <source src="" type="video/mp4">
+                    متصفحك لا يدعم عرض الفيديو.
+                </video>
+            </div>
+
+            <a id="modalBookingBtn" href="#" class="btn-gold-modal">ابدأ مغامرتك الآن</a>
+        </div>
+    </div>
+
+    <script>
+        function openVideoModal(videoFile, tourTitle, tourId) {
+            const videoElement = document.getElementById('localExperienceVideo');
+            videoElement.src = videoFile;
+            videoElement.load();
+            videoElement.play();
+
+            document.getElementById('modalTitle').innerText = tourTitle;
+            
+            <?php if(isset($_SESSION['username'])): ?>
+                document.getElementById('modalBookingBtn').href = 'booking.php?id=' + tourId + '&title=' + encodeURIComponent(tourTitle);
+            <?php else: ?>
+                document.getElementById('modalBookingBtn').href = 'login.php';
+            <?php endif; ?>
+
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        function closeVideoModal() {
+            const videoElement = document.getElementById('localExperienceVideo');
+            videoElement.pause();
+            videoElement.src = '';
+            document.getElementById('videoModal').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
