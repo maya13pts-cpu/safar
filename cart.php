@@ -16,19 +16,69 @@
             --text-color: #3b2f28;        /* بني داكن للنصوص */
             --danger-color: #a94442;      /* أحمر خافض للحذف */
             --border-color: #e2d7c7;      /* حدود دافئة */
-            --success-color: #4a6b5d;     /* أخضر هادئ ومتناسق مع الثيم للخصم */
+            --success-color: #4a6b5d;     /* أخضر هادئ للخصم */
         }
 
         body {
             font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ----- الرأس (Header) ----- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 2px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(140, 103, 71, 0.05);
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: var(--accent-color);
+            font-weight: 400;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* ----- المحتوى الرئيسي ----- */
+        main {
+            flex: 1;
+            padding: 20px;
         }
         .container {
             max-width: 900px;
-            margin: 40px auto;
+            margin: 20px auto;
             background: #ffffff;
             padding: 35px;
             border-radius: 12px;
@@ -47,11 +97,7 @@
             margin: 0;
             color: var(--primary-color);
             font-weight: 700;
-            font-size: 24px;
-        }
-        .header-title span {
-            font-weight: 400;
-            color: var(--accent-color);
+            font-size: 22px;
         }
         .back-btn {
             background-color: transparent;
@@ -68,6 +114,8 @@
             background-color: var(--primary-color);
             color: #fff;
         }
+
+        /* الجدول والعناصر */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -87,7 +135,6 @@
             background-color: var(--card-bg);
         }
         
-        /* تنسيق مدخلات عدد التذاكر */
         .qty-input {
             width: 60px;
             padding: 6px 8px;
@@ -100,10 +147,6 @@
             color: var(--text-color);
             background-color: #fff;
             outline: none;
-            transition: border-color 0.3s;
-        }
-        .qty-input:focus {
-            border-color: var(--primary-color);
         }
 
         .btn-delete {
@@ -122,7 +165,6 @@
             color: #ffffff;
         }
 
-        /* قسم كوبون الخصم */
         .coupon-section {
             display: flex;
             gap: 10px;
@@ -140,9 +182,6 @@
             border-radius: 6px;
             font-family: 'Tajawal', sans-serif;
             outline: none;
-        }
-        .coupon-input:focus {
-            border-color: var(--primary-color);
         }
         .coupon-btn {
             background-color: var(--accent-color);
@@ -172,10 +211,6 @@
             padding-top: 20px;
             border-top: 2px dashed var(--border-color);
         }
-        .cart-summary h3 {
-            margin: 0;
-            font-weight: 500;
-        }
         .total-price {
             color: var(--primary-color);
             font-weight: 700;
@@ -187,12 +222,11 @@
             text-decoration: none;
             border-radius: 8px;
             font-weight: 700;
-            transition: background-color 0.3s ease, transform 0.2s;
+            transition: background-color 0.3s ease;
             box-shadow: 0 4px 10px rgba(140, 103, 71, 0.2);
         }
         .checkout-btn:hover {
             background-color: var(--primary-dark);
-            transform: translateY(-2px);
         }
         .empty-cart {
             text-align: center;
@@ -204,84 +238,139 @@
             border: 1px dashed var(--border-color);
             display: none;
         }
+
+        /* ----- التذيل (Footer) ----- */
+        footer {
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            border-top: 3px solid var(--accent-color);
+        }
+        footer p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #e2d7c7;
+        }
+        .footer-links {
+            margin-top: 10px;
+        }
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- ترويسة الصفحة مع زر العودة -->
-        <div class="header-section">
-            <h2 class="header-title">سلة الحجوزات <span>| سَفَر</span></h2>
-            <a href="trips.html" class="back-btn">← العودة لاستعراض الرحلات</a>
-        </div>
+    <!-- 1. الرأس (Header) -->
+    <header>
+        <a href="index.html" class="logo">سَفَر <span>| Safar</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="trips.html">الرحلات والفعاليات</a></li>
+                <li><a href="cart.html" class="active">السلة</a></li>
+                <li><a href="about.html">عن سَفَر</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <!-- جدول الحجوزات -->
-        <table id="cartTable">
-            <thead>
-                <tr>
-                    <th>اسم الرحلة / الفعالية</th>
-                    <th>السعر الفردي</th>
-                    <th>عدد التذاكر</th>
-                    <th>الإجمالي الفرعي</th>
-                    <th>الإجراء</th>
-                </tr>
-            </thead>
-            <tbody id="cartItems">
-                <tr>
-                    <td><strong>ورشة عمل صناعة الفخار التراثية</strong></td>
-                    <td class="unit-price" data-price="120">120.00 ر.س</td>
-                    <td><input type="number" class="qty-input" value="2" min="1" onchange="updateRowTotal(this)"></td>
-                    <td class="subtotal">240.00 ر.س</td>
-                    <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
-                </tr>
-                <tr>
-                    <td><strong>رحلة السفاري واستكشاف الكثبان الرملية</strong></td>
-                    <td class="unit-price" data-price="200">200.00 ر.س</td>
-                    <td><input type="number" class="qty-input" value="1" min="1" onchange="updateRowTotal(this)"></td>
-                    <td class="subtotal">200.00 ر.س</td>
-                    <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
-                </tr>
-                <tr>
-                    <td><strong>جولة المعالم والمباني التاريخية القديمة</strong></td>
-                    <td class="unit-price" data-price="85">85.00 ر.س</td>
-                    <td><input type="number" class="qty-input" value="3" min="1" onchange="updateRowTotal(this)"></td>
-                    <td class="subtotal">255.00 ر.س</td>
-                    <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
-                </tr>
-                <tr>
-                    <td><strong>سهرة التخييم ورصد النجوم التراثية</strong></td>
-                    <td class="unit-price" data-price="150">150.00 ر.س</td>
-                    <td><input type="number" class="qty-input" value="2" min="1" onchange="updateRowTotal(this)"></td>
-                    <td class="subtotal">300.00 ر.س</td>
-                    <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- قسم تطبيق كوبون الخصم -->
-        <div style="margin-bottom: 10px;">
-            <div class="coupon-section">
-                <input type="text" id="couponInput" class="coupon-input" placeholder="ادخلي كود الخصم (مثال: SAFAR10)">
-                <button class="coupon-btn" onclick="applyCoupon()">تطبيق الكوبون</button>
+    <!-- 2. محتوى الصفحة الرئيسي -->
+    <main>
+        <div class="container">
+            <div class="header-section">
+                <h2 class="header-title">سلة الحجوزات</h2>
+                <a href="trips.html" class="back-btn">← العودة لاستعراض الرحلات</a>
             </div>
-            <div id="couponMessage" class="coupon-msg"></div>
-        </div>
 
-        <!-- رسالة السلة الفارغة -->
-        <div id="emptyMessage" class="empty-cart">
-            <p>السلة فارغة حالياً. لم تقومي بإضافة أي رحلات أو فعاليات بعد.</p>
-        </div>
+            <!-- جدول الحجوزات -->
+            <table id="cartTable">
+                <thead>
+                    <tr>
+                        <th>اسم الرحلة / الفعالية</th>
+                        <th>السعر الفردي</th>
+                        <th>عدد التذاكر</th>
+                        <th>الإجمالي الفرعي</th>
+                        <th>الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="cartItems">
+                    <tr>
+                        <td><strong>ورشة عمل صناعة الفخار التراثية</strong></td>
+                        <td class="unit-price" data-price="120">120.00 ر.س</td>
+                        <td><input type="number" class="qty-input" value="2" min="1" onchange="updateRowTotal(this)"></td>
+                        <td class="subtotal">240.00 ر.س</td>
+                        <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>رحلة السفاري واستكشاف الكثبان الرملية</strong></td>
+                        <td class="unit-price" data-price="200">200.00 ر.س</td>
+                        <td><input type="number" class="qty-input" value="1" min="1" onchange="updateRowTotal(this)"></td>
+                        <td class="subtotal">200.00 ر.س</td>
+                        <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>جولة المعالم والمباني التاريخية القديمة</strong></td>
+                        <td class="unit-price" data-price="85">85.00 ر.س</td>
+                        <td><input type="number" class="qty-input" value="3" min="1" onchange="updateRowTotal(this)"></td>
+                        <td class="subtotal">255.00 ر.س</td>
+                        <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>سهرة التخييم ورصد النجوم التراثية</strong></td>
+                        <td class="unit-price" data-price="150">150.00 ر.س</td>
+                        <td><input type="number" class="qty-input" value="2" min="1" onchange="updateRowTotal(this)"></td>
+                        <td class="subtotal">300.00 ر.س</td>
+                        <td><button class="btn-delete" onclick="removeItem(this)">حذف</button></td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <!-- ملخص السلة -->
-        <div class="cart-summary" id="cartSummary">
-            <h3>إجمالي المبلغ: <span id="totalAmount" class="total-price">995.00 ر.س</span></h3>
-            <a href="#" class="checkout-btn" onclick="alert('تم الانتقال لصفحة الدفع بنجاح!'); return false;">الإنتقال لإتمام الحجز والدفع</a>
+            <!-- قسم كود الخصم -->
+            <div>
+                <div class="coupon-section">
+                    <input type="text" id="couponInput" class="coupon-input" placeholder="ادخلي كود الخصم (مثال: SAFAR10)">
+                    <button class="coupon-btn" onclick="applyCoupon()">تطبيق الكوبون</button>
+                </div>
+                <div id="couponMessage" class="coupon-msg"></div>
+            </div>
+
+            <!-- رسالة السلة الفارغة -->
+            <div id="emptyMessage" class="empty-cart">
+                <p>السلة فارغة حالياً. لم تقومي بإضافة أي رحلات أو فعاليات بعد.</p>
+            </div>
+
+            <!-- ملخص السلة -->
+            <div class="cart-summary" id="cartSummary">
+                <h3>إجمالي المبلغ: <span id="totalAmount" class="total-price">995.00 ر.س</span></h3>
+                <a href="#" class="checkout-btn" onclick="alert('تم الانتقال لصفحة الدفع بنجاح!'); return false;">الإنتقال لإتمام الحجز والدفع</a>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <!-- 3. التذييل (Footer) -->
+    <footer>
+        <p>منصة سَفَر | تجارب سياحية وتراثية غنية بروح الأصالة</p>
+        <p>© 2026 جميع الحقوق محفوظة لـ سَفَر (Safar)</p>
+        <div class="footer-links">
+            <a href="#">الشروط والأحكام</a> |
+            <a href="#">سياسة الخصوصية</a> |
+            <a href="#">الأسئلة الشائعة</a>
+        </div>
+    </footer>
 
     <!-- كود JavaScript -->
     <script>
-        let discountPercentage = 0; // نسبة الخصم المبدئية
+        let discountPercentage = 0;
 
         function updateRowTotal(input) {
             if (input.value < 1 || input.value === '') {
@@ -308,7 +397,6 @@
             const code = document.getElementById('couponInput').value.trim();
             const msg = document.getElementById('couponMessage');
 
-            // تجربة كوبون افتراضي باسم SAFAR10 يمنح خصم 10%
             if (code === "SAFAR10") {
                 discountPercentage = 0.10;
                 msg.style.color = "var(--success-color)";
@@ -333,7 +421,6 @@
                 total += price * qty;
             }
 
-            // تطبيق الخصم إن وجد
             if (discountPercentage > 0) {
                 const discountAmount = total * discountPercentage;
                 total = total - discountAmount;
@@ -352,3 +439,5 @@
 
 </body>
 </html>
+   
+        
