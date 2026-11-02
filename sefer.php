@@ -1,7 +1,25 @@
 <?php
 session_start();
 include 'db.php';
+// معالجة إضافة الرحلة للسلة والتوجيه المباشر
+if (isset($_POST['add_to_cart'])) {
+    $id = $_POST['trip_id'];
+    $name = $_POST['trip_name'];
+    $price = (float)$_POST['trip_price'];
 
+    if (isset($_SESSION['cart'][$id])) {
+        $_SESSION['cart'][$id]['quantity'] += 1;
+    } else {
+        $_SESSION['cart'][$id] = [
+            'name' => $name,
+            'price' => $price,
+            'quantity' => 1
+        ];
+    }
+
+    header("Location: cart.php");
+    exit();
+}
 $tours = [
     [
         "id" => 1,
