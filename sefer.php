@@ -1,77 +1,3 @@
-<?php
-session_start();
-include 'db.php';
-
-$tours = [
-    [
-        "id" => 1,
-        "title" => "جولة هايكنج في جبال السودة",
-        "location" => "منطقة عسير - جبال السودة، أبها",
-        "desc" => "استكشاف المسارات الجبلية الوعرة وأجواء الضباب الساحرة في أبها برفقة مرشد محلي خبير.",
-        "price" => 150,
-        "duration" => "4 ساعات",
-        "guide" => "فهد القحطاني",
-        "guide_role" => "مرشد مرتفعات وطبيعة",
-        "video" => "alsoudah.mp4"
-    ],
-    [
-        "id" => 2,
-        "title" => "ورشة صناعة فخار في العلا",
-        "location" => "منطقة الحجر التاريخية - محافظة العلا",
-        "desc" => "عش أصالة التراث العريق وتعرف على حرف الأجداد الطينية وسط الطبيعة التاريخية الخلابة.",
-        "price" => 100,
-        "duration" => "3 ساعات",
-        "guide" => "نورة العتيبي",
-        "guide_role" => "أخصائية حرف تراثية",
-        "video" => "pottery.mp4"
-    ],
-    [
-        "id" => 3,
-        "title" => "تجربة غزل الصوف التقليدي",
-        "location" => "القرية التراثية - الطائف",
-        "desc" => "تعلم حياكة صوف الغنم وصنع خيوط وملابس تقليدية يدوياً على أصول الأجداد.",
-        "price" => 70,
-        "duration" => "ساعتان ونصف",
-        "guide" => "نورة العتيبي",
-        "guide_role" => "أخصائية حرف تراثية",
-        "video" => "wool.mp4"
-    ],
-    [
-        "id" => 4,
-        "title" => "رحلة سفاري وكثبان الصحراء",
-        "location" => "الصحراء الشرقية - رمال الربع الخالي",
-        "desc" => "مغامرة استكشاف الكثبان الرملية الذهبية، ركوب الإبل، وجلسة سمر تقليدية تحت النجوم.",
-        "price" => 250,
-        "duration" => "6 ساعات",
-        "guide" => "سالم المري",
-        "guide_role" => "دليل الصحراء والبدو",
-        "video" => "safari.mp4"
-    ],
-    [
-        "id" => 5,
-        "title" => "جولة مزارع النخيل والعيون",
-        "location" => "واحة الأحساء التاريخية",
-        "desc" => "استمتع بجولة هادئة بين ملايين النخيل والينابيع الطبيعية العذبة مع تذوق التمور المحلية.",
-        "price" => 80,
-        "duration" => "3 ساعات",
-        "guide" => "فهد القحطاني",
-        "guide_role" => "مرشد بيئي واحات",
-        "video" => "ahsa.mp4"
-    ],
-    [
-        "id" => 6,
-        "title" => "رحلة بحرية واستكشاف الساحل",
-        "location" => "ساحل البحر الأحمر - أملج",
-        "desc" => "جولة بحرية ساحرة في مياه البحر الأحمر الصافية والتعرف على ثقافة الصيد والبيئة البحرية.",
-        "price" => 200,
-        "duration" => "5 ساعات",
-        "guide" => "سالم المري",
-        "guide_role" => "قائد رحلات بحرية",
-        "video" => "umluj.mp4"
-    ]
-];
-?>
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -357,14 +283,10 @@ $tours = [
             <div class="logo-text">سَفَر | SAFAR</div>
         </div>
         <nav>
-            <a href="index.php">الرئيسية</a>
+            <a href="sefer.php">الرئيسية</a>
             <a href="services.php">الرحلات والخدمات</a>
-            <?php if(isset($_SESSION['username'])): ?>
-                <a href="account.php" class="btn-nav-auth">حسابي</a>
-                <a href="logout.php">تسجيل الخروج</a>
-            <?php else: ?>
-                <a href="login.php" class="btn-nav-auth">تسجيل الدخول</a>
-            <?php endif; ?>
+            <a href="cart.php">سلة الحجوزات</a>
+            <a href="login.php" class="btn-nav-auth">تسجيل الدخول</a>
         </nav>
     </header>
 
@@ -372,36 +294,138 @@ $tours = [
         <h1>استكشف وجهات وتجارب سَفَر</h1>
         <div class="subtitle">اختر جولتك السياحية التراثية المفضلة واستعرض التفاصيل الدقيقة لكل رحلة</div>
 
-        <?php foreach($tours as $tour): ?>
-            <div class="tour-card">
-                <div class="tour-title"><?php echo $tour['title']; ?></div>
-                <div class="location">📍 الموقع: <?php echo $tour['location']; ?></div>
-                <div class="desc"><?php echo $tour['desc']; ?></div>
-                
-                <div class="meta-box">
-                    <div>🧭 <strong>المرشد:</strong> <?php echo $tour['guide']; ?> (<?php echo $tour['guide_role']; ?>)</div>
-                    <div>⏰ <strong>المدة:</strong> <?php echo $tour['duration']; ?></div>
-                </div>
-                
-                <div class="card-footer">
-                    <div class="price-tag"><?php echo $tour['price']; ?> ر.س</div>
-                    
-                    <div class="actions-group">
-                        <?php if(!empty($tour['video'])): ?>
-                            <button class="btn-experience" onclick="openVideoModal('<?php echo $tour['video']; ?>', '<?php echo $tour['title']; ?>', <?php echo $tour['id']; ?>)">
-                                <i class="fa-solid fa-play"></i> عيش التجربة
-                            </button>
-                        <?php endif; ?>
-
-                        <?php if(isset($_SESSION['username'])): ?>
-                            <a href="booking.php?id=<?php echo $tour['id']; ?>&title=<?php echo urlencode($tour['title']); ?>&price=<?php echo $tour['price']; ?>&guide=<?php echo urlencode($tour['guide']); ?>" class="btn-book">حجز التجربة</a>
-                        <?php else: ?>
-                            <a href="login.php" class="btn-book" onclick="alert('يرجى تسجيل الدخول أولاً لإتمام الحجز.');">حجز التجربة</a>
-                        <?php endif; ?>
-                    </div>
+        <!-- رحلة 1 -->
+        <div class="tour-card">
+            <div class="tour-title">جولة هايكنج في جبال السودة</div>
+            <div class="location">📍 الموقع: منطقة عسير - جبال السودة، أبها</div>
+            <div class="desc">استكشاف المسارات الجبلية الوعرة وأجواء الضباب الساحرة في أبها برفقة مرشد محلي خبير.</div>
+            
+            <div class="meta-box">
+                <div>🧭 <strong>المرشد:</strong> فهد القحطاني (مرشد مرتفعات وطبيعة)</div>
+                <div>⏰ <strong>المدة:</strong> 4 ساعات</div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="price-tag">150 ر.س</div>
+                <div class="actions-group">
+                    <button class="btn-experience" onclick="openVideoModal('alsoudah.mp4', 'جولة هايكنج في جبال السودة', 1)">
+                        <i class="fa-solid fa-play"></i> عيش التجربة
+                    </button>
+                    <button class="btn-book" onclick="addToCart('جولة هايكنج في جبال السودة', 150)">حجز التجربة</button>
                 </div>
             </div>
-        <?php endforeach; ?>
+        </div>
+
+        <!-- رحلة 2 -->
+        <div class="tour-card">
+            <div class="tour-title">ورشة صناعة فخار في العلا</div>
+            <div class="location">📍 الموقع: منطقة الحجر التاريخية - محافظة العلا</div>
+            <div class="desc">عش أصالة التراث العريق وتعرف على حرف الأجداد الطينية وسط الطبيعة التاريخية الخلابة.</div>
+            
+            <div class="meta-box">
+                <div>🧭 <strong>المرشد:</strong> نورة العتيبي (أخصائية حرف تراثية)</div>
+                <div>⏰ <strong>المدة:</strong> 3 ساعات</div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="price-tag">100 ر.س</div>
+                <div class="actions-group">
+                    <button class="btn-experience" onclick="openVideoModal('pottery.mp4', 'ورشة صناعة فخار في العلا', 2)">
+                        <i class="fa-solid fa-play"></i> عيش التجربة
+                    </button>
+                    <button class="btn-book" onclick="addToCart('ورشة صناعة فخار في العلا', 100)">حجز التجربة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- رحلة 3 -->
+        <div class="tour-card">
+            <div class="tour-title">تجربة غزل الصوف التقليدي</div>
+            <div class="location">📍 الموقع: القرية التراثية - الطائف</div>
+            <div class="desc">تعلم حياكة صوف الغنم وصنع خيوط وملابس تقليدية يدوياً على أصول الأجداد.</div>
+            
+            <div class="meta-box">
+                <div>🧭 <strong>المرشد:</strong> نورة العتيبي (أخصائية حرف تراثية)</div>
+                <div>⏰ <strong>المدة:</strong> ساعتان ونصف</div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="price-tag">70 ر.س</div>
+                <div class="actions-group">
+                    <button class="btn-experience" onclick="openVideoModal('wool.mp4', 'تجربة غزل الصوف التقليدي', 3)">
+                        <i class="fa-solid fa-play"></i> عيش التجربة
+                    </button>
+                    <button class="btn-book" onclick="addToCart('تجربة غزل الصوف التقليدي', 70)">حجز التجربة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- رحلة 4 -->
+        <div class="tour-card">
+            <div class="tour-title">رحلة سفاري وكثبان الصحراء</div>
+            <div class="location">📍 الموقع: الصحراء الشرقية - رمال الربع الخالي</div>
+            <div class="desc">مغامرة استكشاف الكثبان الرملية الذهبية، ركوب الإبل، وجلسة سمر تقليدية تحت النجوم.</div>
+            
+            <div class="meta-box">
+                <div>🧭 <strong>المرشد:</strong> سالم المري (دليل الصحراء والبدو)</div>
+                <div>⏰ <strong>المدة:</strong> 6 ساعات</div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="price-tag">250 ر.س</div>
+                <div class="actions-group">
+                    <button class="btn-experience" onclick="openVideoModal('safari.mp4', 'رحلة سفاري وكثبان الصحراء', 4)">
+                        <i class="fa-solid fa-play"></i> عيش التجربة
+                    </button>
+                    <button class="btn-book" onclick="addToCart('رحلة سفاري وكثبان الصحراء', 250)">حجز التجربة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- رحلة 5 -->
+        <div class="tour-card">
+            <div class="tour-title">جولة مزارع النخيل والعيون</div>
+            <div class="location">📍 الموقع: واحة الأحساء التاريخية</div>
+            <div class="desc">استمتع بجولة هادئة بين ملايين النخيل والينابيع الطبيعية العذبة مع تذوق التمور المحلية.</div>
+            
+            <div class="meta-box">
+                <div>🧭 <strong>المرشد:</strong> فهد القحطاني (مرشد بيئي واحات)</div>
+                <div>⏰ <strong>المدة:</strong> 3 ساعات</div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="price-tag">80 ر.س</div>
+                <div class="actions-group">
+                    <button class="btn-experience" onclick="openVideoModal('ahsa.mp4', 'جولة مزارع النخيل والعيون', 5)">
+                        <i class="fa-solid fa-play"></i> عيش التجربة
+                    </button>
+                    <button class="btn-book" onclick="addToCart('جولة مزارع النخيل والعيون', 80)">حجز التجربة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- رحلة 6 -->
+        <div class="tour-card">
+            <div class="tour-title">رحلة بحرية واستكشاف الساحل</div>
+            <div class="location">📍 الموقع: ساحل البحر الأحمر - أملج</div>
+            <div class="desc">جولة بحرية ساحرة في مياه البحر الأحمر الصافية والتعرف على ثقافة الصيد والبيئة البحرية.</div>
+            
+            <div class="meta-box">
+                <div>🧭 <strong>المرشد:</strong> سالم المري (قائد رحلات بحرية)</div>
+                <div>⏰ <strong>المدة:</strong> 5 ساعات</div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="price-tag">200 ر.س</div>
+                <div class="actions-group">
+                    <button class="btn-experience" onclick="openVideoModal('umluj.mp4', 'رحلة بحرية واستكشاف الساحل', 6)">
+                        <i class="fa-solid fa-play"></i> عيش التجربة
+                    </button>
+                    <button class="btn-book" onclick="addToCart('رحلة بحرية واستكشاف الساحل', 200)">حجز التجربة</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- نافذة المودل لعرض الفيديوهات -->
@@ -417,7 +441,7 @@ $tours = [
                 </video>
             </div>
 
-            <a id="modalBookingBtn" href="#" class="btn-gold-modal">ابدأ مغامرتك الآن</a>
+            <a id="modalBookingBtn" href="cart.php" class="btn-gold-modal">إضافة للسلة أو متابعة الحجز</a>
         </div>
     </div>
 
@@ -429,13 +453,6 @@ $tours = [
             videoElement.play();
 
             document.getElementById('modalTitle').innerText = tourTitle;
-            
-            <?php if(isset($_SESSION['username'])): ?>
-                document.getElementById('modalBookingBtn').href = 'booking.php?id=' + tourId + '&title=' + encodeURIComponent(tourTitle);
-            <?php else: ?>
-                document.getElementById('modalBookingBtn').href = 'login.php';
-            <?php endif; ?>
-
             document.getElementById('videoModal').style.display = 'flex';
         }
 
@@ -445,7 +462,17 @@ $tours = [
             videoElement.src = '';
             document.getElementById('videoModal').style.display = 'none';
         }
+
+        // دالة إضافة الرحلة إلى السلة عبر LocalStorage المتوافقة مع cart.php
+        function addToCart(title, price) {
+            let cart = JSON.parse(localStorage.getItem('safarCart')) || [];
+            cart.push({ title: title, price: price });
+            localStorage.setItem('safarCart', JSON.stringify(cart));
+            alert('تمت إضافة الرحلة إلى سلة الحجوزات بنجاح! 🛒');
+        }
     </script>
 
 </body>
 </html>
+            
+           
