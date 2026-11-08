@@ -1,9 +1,26 @@
+<?php
+session_start();
+ 
+// 1. استقبال الرحلة المضافة من صفحة sefer.php وإضافتها للسلة
+if (isset($_POST['name']) && isset($_POST['price'])) {
+    $_SESSION['cart'][] = array(
+        'name'  => $_POST['name'],
+        'price' => $_POST['price']
+    );
+}
+
+// 2. معالجة حذف رحلة من السلة
+if (isset($_GET['remove'])) {
+    unset($_SESSION['cart'][$_GET['remove']]);
+    $_SESSION['cart'] = array_values($_SESSION['cart']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <a href="sefer.php"></a>
   <title>سلة الحجوزات | سَفَر SAFAR</title>
   <style>
     :root {
@@ -107,6 +124,7 @@
       padding: 6px 14px;
       border-radius: 6px;
       cursor: pointer;
+      text-decoration: none;
       transition: 0.2s;
     }
 
@@ -173,70 +191,51 @@
   <main class="container">
     <h1>سلة الحجوزات</h1>
     
-    <div id="cart-list" class="cart-items">
-      <!-- يتم تحميل عناصر الرحلات المضافة هنا ديناميكياً -->
+    <div class="cart-items">
+      <?php
+      if (empty($_SESSION['cart'])) {
+          echo '<div class="empty">السلة فارغة حالياً، ابدأ باختيار رحلتك المفضلة!</div>';
+      } else {
+          $items_count = count($_SESSION['cart']);
+          echo "<div style='margin-bottom: 10px; font-weight: bold;'>عدد الرحلات المتاحة في السلة: " . $items_count . "</div>";
+
+          foreach ($_SESSION['cart'] as $i => $item) {
+              $trip_name = strtoupper($item['name']);
+              echo '
+              <div class="cart-item">
+                <span><b>' . $trip_name . '</b></span>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                  <span style="color: var(--accent); font-weight: bold;">' . $item['price'] . ' ر.س</span>
+                  <a href="cart.php?remove=' . $i . '" class="delete-btn">حذف</a>
+                </div>
+              </div>';
+          }
+      }
+      ?>
     </div>
 
     <div class="summary">
       <span>الإجمالي الكلي:</span>
-      <span id="total-price">0 ر.س</span>
+      <span>
+        <?php
+        $total = 0;
+        if (!empty($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $item) {
+                $total += $item['price'];
+            }
+        }
+        echo $total . ' ر.س';
+        ?>
+      </span>
     </div>
 
     <button class="checkout-btn" onclick="checkout()">إتمام الدفع</button>
   </main>
 
   <script>
-    // جلب العناصر وعرضها من LocalStorage
-    function loadCart() {
-      let cart = JSON.parse(localStorage.getItem('safarCart')) || [];
-      let list = document.getElementById('cart-list');
-      let totalEl = document.getElementById('total-price');
-      list.innerHTML = '';
-      let total = 0;
-
-      if (cart.length === 0) {
-        list.innerHTML = '<div class="empty">السلة فارغة حالياً، ابدأ باختيار رحلتك المفضلة!</div>';
-        totalEl.textContent = '0 ر.س';
-        return;
-      }
-
-      cart.forEach((item, index) => {
-        total += Number(item.price);
-        list.innerHTML += `
-          <div class="cart-item">
-            <span><b>${item.title}</b></span>
-            <div style="display: flex; align-items: center; gap: 15px;">
-              <span style="color: var(--accent); font-weight: bold;">${item.price} ر.س</span>
-              <button class="delete-btn" onclick="removeItem(${index})">حذف</button>
-            </div>
-          </div>
-        `;
-      });
-
-      totalEl.textContent = total + ' ر.س';
-    }
-
-    // حذف عنصر
-    function removeItem(index) {
-      let cart = JSON.parse(localStorage.getItem('safarCart')) || [];
-      cart.splice(index, 1);
-      localStorage.setItem('safarCart', JSON.stringify(cart));
-      loadCart();
-    }
-
-    // إتمام الدفع
     function checkout() {
-      let cart = JSON.parse(localStorage.getItem('safarCart')) || [];
-      if (cart.length === 0) {
-        alert('السلة فارغة!');
-        return;
-      }
       alert('تم إتمام الحجز بنجاح! شكراً لاختيارك سَفَر.');
-      localStorage.removeItem('safarCart');
-      loadCart();
     }
-
-    document.addEventListener('DOMContentLoaded', loadCart);
   </script>
 </body>
 </html>
