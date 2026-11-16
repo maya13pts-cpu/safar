@@ -1,0 +1,401 @@
+<?php
+session_start();
+include 'db.php';
+
+// التحقق من اسم المستخدم بالطريقة البسيطة
+$current_username = "";
+if (isset($_SESSION['username'])) {
+    $current_username = $_SESSION['username'];
+}
+
+include 'tours_data.php';
+?>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>الرحلات والخدمات - سَفَر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-beige: #f7f4ef;          
+            --primary-accent: #a3704c;    
+            --dark-brown: #3C2A21;        
+            --btn-beige: #a58f70;
+            --accent-gold: #C5A059;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.8)), url('tt.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: rgba(242, 233, 220, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e6d7c3;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--dark-brown);
+        }
+
+        header nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        header nav a.btn-nav-auth {
+            background-color: var(--btn-beige);
+            color: #fff;
+        }
+
+        header nav a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #e0d6c8;
+            margin-bottom: 35px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .tour-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            border-right: 6px solid var(--accent-gold);
+            color: var(--dark-brown);
+        }
+
+        .tour-title {
+            color: var(--dark-brown);
+            font-size: 22px;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .location {
+            font-size: 14px;
+            color: var(--primary-accent);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .meta-box {
+            background: #faf6f0;
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--dark-brown);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+        }
+
+        .price-tag {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-accent);
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-experience {
+            background-color: #FAF8F5;
+            color: var(--dark-brown);
+            border: 1px solid var(--accent-gold);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-experience:hover {
+            background-color: var(--accent-gold);
+            color: #fff;
+        }
+
+        .btn-book {
+            background-color: var(--accent-gold);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .btn-book:hover {
+            background-color: #A6823C;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(60, 42, 33, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 650px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            position: relative;
+            color: var(--dark-brown);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--dark-brown);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--accent-gold);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            max-height: 380px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .btn-gold-modal {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+
+        .btn-gold-modal:hover {
+            background-color: #A6823C;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="1000048940.jpg" alt="شعار سَفَر" class="logo-img" onerror="this.style.display='none';">
+            <div class="logo-text">سَفَر | SAFAR</div>
+        </div>
+        <nav>
+            <a href="index.php">الرئيسية</a>
+            <a href="sefer.php">الرحلات والخدمات</a>
+            <?php
+            if ($current_username != "") {
+                echo '<a href="account.php" class="btn-nav-auth">حسابي</a>';
+                echo '<a href="logout.php">تسجيل الخروج</a>';
+            } else {
+                echo '<a href="login.php" class="btn-nav-auth">تسجيل الدخول</a>';
+            }
+            ?>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>استكشف وجهات وتجارب سَفَر</h1>
+        <div class="subtitle">اختر جولتك السياحية التراثية المفضلة واستعرض التفاصيل الدقيقة لكل رحلة</div>
+
+        <?php foreach($tours as $tour) { ?>
+            <div class="tour-card">
+                <div class="tour-title"><?php echo $tour['title']; ?></div>
+                <div class="location">📍 الموقع: <?php echo $tour['location']; ?></div>
+                <div class="desc"><?php echo $tour['desc']; ?></div>
+                
+                <div class="meta-box">
+                    <div>🧭 <strong>المرشد:</strong> <?php echo $tour['guide']; ?> (<?php echo $tour['guide_role']; ?>)</div>
+                    <div>⏰ <strong>المدة:</strong> <?php echo $tour['duration']; ?></div>
+                </div>
+                
+                <div class="card-footer">
+                    <div class="price-tag"><?php echo $tour['price']; ?> ر.س</div>
+                    
+                    <div class="actions-group">
+                        <?php 
+                        // التحقق بطريقة بسيطة بدون !empty
+                        if ($tour['video'] != "") { 
+                        ?>
+                            <button class="btn-experience" onclick="openVideoModal('<?php echo $tour['video']; ?>', '<?php echo $tour['title']; ?>', <?php echo $tour['id']; ?>)">
+                                <i class="fa-solid fa-play"></i> عيش التجربة
+                            </button>
+                        <?php 
+                        } 
+                        ?>
+
+                        <?php if ($current_username != "") { ?>
+                            <a href="booking.php?id=<?php echo $tour['id']; ?>" class="btn-book">حجز التجربة</a>
+                        <?php } else { ?>
+                            <a href="login.php" class="btn-book" onclick="alert('يرجى تسجيل الدخول أولاً لإتمام الحجز.');">حجز التجربة</a>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+
+    <!-- نافذة المودل لعرض الفيديوهات -->
+    <div id="videoModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeVideoModal()">&times;</span>
+            <h3 id="modalTitle">عنوان التجربة</h3>
+            
+            <div class="video-container">
+                <video id="localExperienceVideo" controls autoplay>
+                    <source src="" type="video/mp4">
+                    متصفحك لا يدعم عرض الفيديو.
+                </video>
+            </div>
+
+            <a id="modalBookingBtn" href="#" class="btn-gold-modal">ابدأ مغامرتك الآن</a>
+        </div>
+    </div>
+
+    <script>
+        // نعرف متغير جافاسكريبت يحدد هل المستخدم مسجل دخول ولا لا
+        const isLoggedIn = <?php echo ($current_username != "") ? "true" : "false"; ?>;
+
+        function openVideoModal(videoFile, tourTitle, tourId) {
+            const videoElement = document.getElementById('localExperienceVideo');
+            videoElement.src = videoFile;
+            videoElement.load();
+            videoElement.play();
+
+            document.getElementById('modalTitle').innerText = tourTitle;
+            
+           
+            if (isLoggedIn) {
+                document.getElementById('modalBookingBtn').href = 'booking.php?id=' + tourId;
+            } else {
+                document.getElementById('modalBookingBtn').href = 'login.php';
+            }
+
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        function closeVideoModal() {
+            const videoElement = document.getElementById('localExperienceVideo');
+            videoElement.pause();
+            videoElement.src = '';
+            document.getElementById('videoModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
